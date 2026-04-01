@@ -36,6 +36,40 @@ namespace KFDtool.P25.Validator
             }
         }
 
+        public static int GetCryptoGroupFromSln(int sln)
+        {
+            return (sln >> 12) & 0x0F;
+        }
+
+        public static int GetCryptoGroupFromKeysetId(int keysetId)
+        {
+            // TIA-102.AACA-C 6.1: Keyset ID is offset by 1 before crypto-group derivation.
+            return ((keysetId - 1) >> 4) & 0x0F;
+        }
+
+        public static bool IsValidSlnKeysetPair(int keysetId, int sln)
+        {
+            return GetCryptoGroupFromKeysetId(keysetId) == GetCryptoGroupFromSln(sln);
+        }
+
+        public static string GetSlnKeysetPairValidationMessage(int keysetId, int sln)
+        {
+            if (IsValidSlnKeysetPair(keysetId, sln))
+            {
+                return string.Empty;
+            }
+
+            int keysetCryptoGroup = GetCryptoGroupFromKeysetId(keysetId);
+            int slnCryptoGroup = GetCryptoGroupFromSln(sln);
+
+            return string.Format(
+                "Crypto Group mismatch: Keyset ID {0} maps to group {1}, but SLN {2} maps to group {3}",
+                keysetId,
+                keysetCryptoGroup,
+                sln,
+                slnCryptoGroup);
+        }
+
         public static bool IsValidKeyId(int keyId)
         {
             /* TIA 102.AACA-A 10.3.10 */
@@ -107,6 +141,12 @@ namespace KFDtool.P25.Validator
             if (!IsValidSln(sln))
             {
                 return Tuple.Create(ValidateResult.Error, "SLN invalid - valid range 0 to 65535 (dec), 0x0000 to 0xFFFF (hex)");
+            }
+
+            string slnKeysetPairMessage = GetSlnKeysetPairValidationMessage(keysetId, sln);
+            if (!string.IsNullOrEmpty(slnKeysetPairMessage))
+            {
+                return Tuple.Create(ValidateResult.Warning, slnKeysetPairMessage);
             }
 
             if (!IsValidKeyId(keyId))
