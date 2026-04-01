@@ -910,20 +910,19 @@ namespace KFDtool.Gui
                     NavigateUtilityChangeThemeSystem.IsChecked = true;
                     if (IsSystemLightTheme())
                     {
-                        //ThemesController.SetTheme(ThemeType.LightTheme);
-                        ThemesController.ClearTheme();
+                        ThemesController.SetTheme(ThemeType.LightTheme);
                         this.Style = new Style();
                     }
                     else
                     {
                         ThemesController.SetTheme(ThemeType.SoftDark);
+                        this.Style = (Style)FindResource("CustomWindowStyle");
                     }
                     break;
                 // Light theme
                 case Settings.ThemeMode.Light:
                     NavigateUtilityChangeThemeLight.IsChecked = true;
-                    //ThemesController.SetTheme(ThemeType.LightTheme);
-                    ThemesController.ClearTheme();
+                    ThemesController.SetTheme(ThemeType.LightTheme);
                     this.Style = new Style();
                     break;
                 // Dark Theme
