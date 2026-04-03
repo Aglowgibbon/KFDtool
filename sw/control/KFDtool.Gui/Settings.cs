@@ -73,6 +73,9 @@ namespace KFDtool.Gui
             Properties.Settings.Default.DeviceType = "TwiKfdDevice";
             Properties.Settings.Default.KfdDeviceType = "KfdShield";
             Properties.Settings.Default.SelectedTheme = "System";
+            Properties.Settings.Default.PromptSavePendingKeyChanges = true;
+            Properties.Settings.Default.PromptDuplicateKeyConflicts = true;
+            Properties.Settings.Default.PromptWeakKeyWarnings = true;
             Properties.Settings.Default.Save();
         }
 
@@ -97,6 +100,57 @@ namespace KFDtool.Gui
             SelectedDevice.DeviceType = (BaseDevice.DeviceTypeOptions)Enum.Parse(typeof(BaseDevice.DeviceTypeOptions), Properties.Settings.Default.DeviceType);
             SelectedDevice.KfdDeviceType = (Adapter.Device.TwiKfdDevice)Enum.Parse(typeof(Adapter.Device.TwiKfdDevice), Properties.Settings.Default.KfdDeviceType);
             SelectedTheme = (ThemeMode)Enum.Parse(typeof(ThemeMode), Properties.Settings.Default.SelectedTheme);
+        }
+    }
+}
+
+namespace KFDtool.Gui.Properties
+{
+    internal sealed partial class Settings
+    {
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PromptSavePendingKeyChanges
+        {
+            get
+            {
+                return ((bool)(this["PromptSavePendingKeyChanges"]));
+            }
+            set
+            {
+                this["PromptSavePendingKeyChanges"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PromptDuplicateKeyConflicts
+        {
+            get
+            {
+                return ((bool)(this["PromptDuplicateKeyConflicts"]));
+            }
+            set
+            {
+                this["PromptDuplicateKeyConflicts"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PromptWeakKeyWarnings
+        {
+            get
+            {
+                return ((bool)(this["PromptWeakKeyWarnings"]));
+            }
+            set
+            {
+                this["PromptWeakKeyWarnings"] = value;
+            }
         }
     }
 }
